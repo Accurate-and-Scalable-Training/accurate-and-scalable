@@ -1,0 +1,14 @@
+rules:
+  - id: try-it-yourself-8-template
+    options:
+      interfile: true
+    languages:
+      - javascript
+    mode: taint
+    pattern-sources:
+      - pattern: req.body.imageUrl
+    pattern-sinks:
+      - pattern: $CHANGE_ME
+    message: Semgrep found a potential SSRF, an untrusted url is stored in the $URL
+      parameter and then accessed
+    severity: WARNING
