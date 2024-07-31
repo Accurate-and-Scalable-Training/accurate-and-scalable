@@ -1,0 +1,25 @@
+rules:
+- id: try-it-yourself-9-template
+  languages:
+    - py
+  mode: join
+  join:
+    rules:
+      - id: tiy_9_source_for_join_mode
+        mode: taint
+        pattern-sources:
+            - pattern: request.args.get(...)
+        pattern-sinks:
+            - pattern: access_url($URL)
+        languages: 
+          - py
+
+      - id: tiy_9_sink_for_join_mode
+        pattern: requests.get($URL, ...)
+        languages:
+          - py
+
+    on:
+    - '$CHANGE_ME'
+  severity: WARNING
+  message: potential SSRF was found
