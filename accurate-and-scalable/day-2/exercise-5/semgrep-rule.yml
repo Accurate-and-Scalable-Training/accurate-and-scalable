@@ -1,0 +1,10 @@
+rules:
+  - id: exercise-5-template
+    patterns:
+      - pattern: {$CHANGE_ME}
+      - metavariable-regex:
+          metavariable: {$CHANGE_ME}
+          regex: (get|post)
+    message: $METHOD $PATH
+    languages: [ts]
+    severity: WARNING

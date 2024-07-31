@@ -1,0 +1,28 @@
+id: try-it-yourself-1-template
+info:
+  name: try-it-yourself-1-template
+  author: bounce
+  severity: high
+
+variables:
+  allowed_url: https://github.com/juice-shop/juice-shop
+  controlled_url: https://evil.com
+  param: pwned
+
+http:
+  - raw:
+      - |
+        GET /redirect?to={$CHANGE_ME}?{$CHANGE_ME}={{allowed_url}} HTTP/1.1
+        Host: {{Hostname}}
+        Origin: {{BaseURL}}
+        Cookie: __Secure-balancer={$CHANGE_ME}
+    
+    matchers-condition: {$CHANGE_ME}
+    matchers:
+      - type: status
+        status:
+          - {$CHANGE_ME}
+      - type: word
+        words:
+          - "Found. Redirecting to {$CHANGE_ME}?{{param}}={$CHANGE_ME}"
+

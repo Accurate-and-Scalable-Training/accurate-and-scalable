@@ -1,0 +1,22 @@
+id: detailed_error1-juiceshop
+info:
+  name: detailed error juiceshop Unexpected path
+  author: bounce
+  severity: low
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/rest/qwertz"
+    headers:
+      Cookie: __Secure-balancer={$CHANGE_ME}
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "stacktrace"
+      - type: status
+        status:
+          - 500

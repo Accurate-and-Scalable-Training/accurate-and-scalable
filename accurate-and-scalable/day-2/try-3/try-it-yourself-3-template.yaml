@@ -1,0 +1,26 @@
+id: try-it-yourself-3-template
+
+info:
+  name: try-it-yourself-3-template
+  author: bounce
+  severity: low
+  
+http:
+  - raw:
+      - |
+        POST /rest/products/reviews HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/json
+        Authorization: Bearer $CHANGE_ME
+        Cookie: __Secure-balancer=$CHANGE_ME
+
+        $CHANGE_ME
+
+    race: $CHANGE_ME
+    race_count: $CHANGE_ME
+
+    matchers:
+      - type: status
+        part: header
+        status:
+          - 200

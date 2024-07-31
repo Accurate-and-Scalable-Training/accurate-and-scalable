@@ -1,0 +1,11 @@
+services:
+    juiceshop1:
+        image: bkimminich/juice-shop
+        restart: unless-stopped
+        ports:
+          - 5000:3000
+    juiceshop2:
+        image: bkimminich/juice-shop
+        restart: unless-stopped
+        ports:
+          - 8080:3000

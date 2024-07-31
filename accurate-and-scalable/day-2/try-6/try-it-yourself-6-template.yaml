@@ -1,0 +1,40 @@
+id: try-it-yourself-6-template
+
+info:
+  name: try-it-yourself-6-template
+  author: bounce
+  severity: high
+
+variables:
+  payload: "ping"
+
+tcp: 
+  - inputs:
+      - data: "{{payload}}"
+    host: 
+      - "{{Hostname}}"
+    port: 80,81,88,443,444,465,513,514,515,543,544,548,2000,2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000,6001,6646,7070,8000,8008,8009,8080,8081,8443,8888,9100,9999,10000,32768,49152,49153
+    matchers:
+      - type: word
+        internal: true
+        words:
+          - "Bad Request"
+
+    extractors:
+      - type: dsl
+        name: tcpport
+        dsl:
+          - trim_prefix(BaseURL,'{$CHANGE_ME}')
+        internal: true
+
+http:
+  - method: GET
+    path:
+      - "{$CHANGE_ME}/rest/user/login"
+    body:
+        "{\"email\":\"'\",\"password\":\"123\"}"
+
+    matchers:
+      - type: status
+        status:
+          - 500

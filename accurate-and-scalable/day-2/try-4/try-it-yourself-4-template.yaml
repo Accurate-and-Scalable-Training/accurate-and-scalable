@@ -1,0 +1,33 @@
+id: try-it-yourself-4-template
+
+info:
+  name: try-it-yourself-4-template
+  author: bounce
+  severity: medium
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/rest/products/search?q=$CHANGE_ME"
+    headers:
+      Cookie: __Secure-balancer={$CHANGE_ME}
+
+    payloads:
+      sqli:
+        - "')) UNION SELECT * FROM x--"
+        - "$CHANGE_ME"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        negative: false
+        words:
+          - $CHANGE_ME
+
+    extractors:
+      - type: json
+        name: passwords
+        json:
+          - '$CHANGE_ME'
+        part: body

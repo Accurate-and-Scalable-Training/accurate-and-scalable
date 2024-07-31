@@ -1,0 +1,27 @@
+id: exercise-1-template
+info:
+  name: exercise-1-template
+  author: bounce
+  severity: low
+
+http:
+  - method: POST
+    path:
+      - "{{BaseURL}}/$CHANGE_ME"
+    headers:
+      Content-Type: {$CHANGE_ME}
+      Cookie: __Secure-balancer={$CHANGE_ME}
+    body: |
+        "{$CHANGE_ME}"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "stack"
+      - type: status
+        status:
+          - $CHANGE_ME
+
+

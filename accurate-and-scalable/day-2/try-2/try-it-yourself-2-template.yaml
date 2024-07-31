@@ -1,0 +1,49 @@
+id: try-it-yourself-2-template
+
+info:
+  name: try-it-yourself-2-template
+  author: bounce
+  severity: low
+
+variables:
+  email: "{{to_lower(rand_base(6))}}"
+  json: |
+    {
+      "email": "{{email}}",
+      "password": "password"
+    }
+  minify: '$CHANGE_ME'
+  balancer: __Secure-balancer={$CHANGE_ME}
+
+
+http:
+  - raw:
+      - |
+        POST /api/users HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/json
+        Connection: keep-alive
+        Cookie: {{balancer}}
+
+        {$CHANGE_ME}
+
+      - |
+        POST /rest/user/login HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/json
+        Cookie: {{balancer}}
+
+        {{minify}}    
+
+    extractors:
+      - type: json
+        name: basket_id
+        json:
+          - '.[] | .bid'
+        part: body
+
+      - type: json
+        name: usertoken
+        json:
+          - '$CHANGE_ME'
+        part: body

