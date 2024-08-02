@@ -9,10 +9,6 @@ echo
 echo
 echo Docker Information:
 docker info
-echo 
-echo 
-echo Semgrep version:
-semgrep --version
 echo
 echo Nuclei version:
 nuclei --version
