@@ -1,8 +1,7 @@
 #!/bin/sh
 
-sudo python3 -m pip install semgrep
-semgrep login
-sudo semgrep install-semgrep-pro
+docker pull semgrep/semgrep
+docker run -it semgrep/semgrep semgrep login
 
 go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
 
