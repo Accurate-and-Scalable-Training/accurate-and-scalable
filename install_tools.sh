@@ -7,9 +7,6 @@ go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
 
 echo
 echo
-echo Docker Information:
-docker info
-echo
 echo Nuclei version:
 nuclei --version
 echo
